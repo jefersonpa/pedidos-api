@@ -1,6 +1,6 @@
 package com.example.trabalho.itemDoPedido;
 
-import jakarta.persistence.*;
+import javax.persistence.*;
 
 @Table(name = "item_do_pedido")
 @Entity(name = "item_do_pedido")
@@ -13,8 +13,8 @@ public class ItemDoPedido {
 	}
 	public ItemDoPedido(ItemDoPedidoRequestDTO data) {
 		super();
-		this.itemDoPedidoId = data.itemDoPedidoId();
-		this.qtdade = data.qtdade();
+		this.itemDoPedidoId = data.getItemDoPedidoId();
+		this.qtdade = data.getQtdade();
 	}
 	//public ItemDoPedido(ItemDoPedidoId itemDoPedidoId, Integer qtdade, String descricao) {
 	//	super();

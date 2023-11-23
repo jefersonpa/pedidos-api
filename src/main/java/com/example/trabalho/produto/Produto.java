@@ -1,6 +1,6 @@
 package com.example.trabalho.produto;
 
-import jakarta.persistence.*;
+import javax.persistence.*;
 
 @Table(name = "produto")
 @Entity(name = "produto")
@@ -10,7 +10,7 @@ public class Produto {
 	}
 	public Produto(ProdutoRequestDTO data) {
 		super();
-		this.descricao = data.descricao();
+		this.descricao = data.getDescricao();
 	}
 	public Produto(Long id, String descricao) {
 		super();

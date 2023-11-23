@@ -5,7 +5,7 @@ import java.util.Date;
 import com.example.trabalho.cliente.Cliente;
 import com.example.trabalho.itemDoPedido.ItemDoPedido;
 
-import jakarta.persistence.*;
+import javax.persistence.*;
 
 @Table(name = "pedido")
 @Entity(name = "pedido")
@@ -21,8 +21,8 @@ public class Pedido {
 	}
 	public Pedido(PedidoRequestDTO data) {
 		super();
-		this.data = data.data();
-		this.cliente = data.cliente();
+		this.data = data.getData();
+		this.cliente = data.getCliente();
 	}
 	public Pedido(Long id, Date data) {
 		super();

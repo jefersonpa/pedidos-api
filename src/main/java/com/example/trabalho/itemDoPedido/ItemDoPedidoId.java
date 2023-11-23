@@ -3,7 +3,7 @@ package com.example.trabalho.itemDoPedido;
 import java.io.Serializable;
 import java.util.Objects;
 
-import jakarta.persistence.*;
+import javax.persistence.*;
 
 @Embeddable
 public class ItemDoPedidoId implements Serializable {

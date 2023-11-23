@@ -1,6 +1,7 @@
 package com.example.trabalho.controller;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -25,7 +26,7 @@ public class ProdutoController {
 
 	@GetMapping(value = "/produtos")
 	public List<ProdutoResponseDTO> getAll() {
-		List<ProdutoResponseDTO> produtoList = repository.findAll().stream().map(ProdutoResponseDTO::new).toList();
+		List<ProdutoResponseDTO> produtoList = repository.findAll().stream().map(ProdutoResponseDTO::new).collect(Collectors.toList());
 		return produtoList;
 	}
 	
@@ -47,7 +48,7 @@ public class ProdutoController {
 	public ProdutoResponseDTO edit(@PathVariable("id") Long id, @RequestBody ProdutoRequestDTO produto) {
 		Produto produtoData = repository.getById(id);
 		if (produtoData != null) {
-			produtoData.setDescricao(produto.descricao());
+			produtoData.setDescricao(produto.getDescricao());
 		}
 		
 		Produto response = repository.save(produtoData);

@@ -3,6 +3,7 @@ package com.example.trabalho.controller;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -29,7 +30,7 @@ public class ClienteController {
 
 	@GetMapping(value = "/clientes")
 	public List<ClienteResponseDTO> getAll() {
-		List<ClienteResponseDTO> clienteList = repository.findAll().stream().map(ClienteResponseDTO::new).toList();
+		List<ClienteResponseDTO> clienteList = repository.findAll().stream().map(ClienteResponseDTO::new).collect(Collectors.toList());
 		return clienteList;
 	}
 	
@@ -63,9 +64,9 @@ public class ClienteController {
 	public ResponseEntity<?> edit(@PathVariable("id") Long id, @RequestBody ClienteRequestDTO cliente) {
 		Cliente clienteData = repository.getById(id);
 		if (clienteData != null) {
-			clienteData.setNome(cliente.nome());
-			clienteData.setSobrenome(cliente.sobrenome());
-			clienteData.setCpf(cliente.cpf());
+			clienteData.setNome(cliente.getNome());
+			clienteData.setSobrenome(cliente.getSobrenome());
+			clienteData.setCpf(cliente.getCpf());
 		}
 		
 		Map<String, Object> map = new LinkedHashMap<String, Object>();

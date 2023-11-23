@@ -1,10 +1,10 @@
 package com.example.trabalho.controller;
 
 import java.util.Date;
-import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -21,7 +21,6 @@ import org.springframework.web.bind.annotation.RestController;
 import com.example.trabalho.cliente.Cliente;
 import com.example.trabalho.cliente.ClienteRepository;
 import com.example.trabalho.itemDoPedido.ItemDoPedido;
-import com.example.trabalho.itemDoPedido.ItemDoPedidoId;
 import com.example.trabalho.itemDoPedido.ItemDoPedidoRepository;
 import com.example.trabalho.pedido.Pedido;
 import com.example.trabalho.pedido.PedidoAndItemRequestDTO;
@@ -44,7 +43,7 @@ public class PedidoController {
 	
 	@GetMapping(value = "/pedidos")
 	public List<PedidoResponseDTO> getAll() {
-		List<PedidoResponseDTO> pedidoList = repository.findAll().stream().map(PedidoResponseDTO::new).toList();
+		List<PedidoResponseDTO> pedidoList = repository.findAll().stream().map(PedidoResponseDTO::new).collect(Collectors.toList());
 		return pedidoList;
 	}
 
@@ -56,7 +55,7 @@ public class PedidoController {
 
 	@GetMapping("/pedidos/cpf/{cpf}")
 	public List<PedidoResponseDTO> getByCPF(@PathVariable("cpf") String cpf) {
-		List<PedidoResponseDTO> pedidoList = repository.getByCPF(cpf).stream().map(PedidoResponseDTO::new).toList();
+		List<PedidoResponseDTO> pedidoList = repository.getByCPF(cpf).stream().map(PedidoResponseDTO::new).collect(Collectors.toList());
 		return pedidoList;
 	}
 
@@ -71,7 +70,7 @@ public class PedidoController {
 	public PedidoResponseDTO edit(@PathVariable("id") Long id, @RequestBody PedidoRequestDTO pedido) {
 		Pedido pedidoData = repository.getById(id);
 		if (pedidoData != null) {
-			pedidoData.setData(pedido.data());
+			pedidoData.setData(pedido.getData());
 		}
 
 		Pedido response = repository.save(pedidoData);
@@ -86,11 +85,11 @@ public class PedidoController {
     @PostMapping("/pedidos/create")
     public ResponseEntity<?> createPedidoAndItem(@RequestBody PedidoAndItemRequestDTO request) {
         try {
-            Cliente cliente = clienteRepository.findByCpf(request.cpf());
+            Cliente cliente = clienteRepository.findByCpf(request.getCpf());
 
             if (cliente == null) {
-                System.out.println("Cliente " + request.cpf() + " não encontrado: ");
-                return ResponseEntity.badRequest().body("Cliente " + request.cpf() + " não encontrado!");
+                System.out.println("Cliente " + request.getCpf() + " não encontrado: ");
+                return ResponseEntity.badRequest().body("Cliente " + request.getCpf() + " não encontrado!");
             }
         	
             Pedido pedido = new Pedido();
@@ -99,7 +98,7 @@ public class PedidoController {
             pedido.setCliente(cliente);
             Pedido response = repository.save(pedido);
                  
-            ItemDoPedido[] itens = request.itensDoPedido();
+            ItemDoPedido[] itens = request.getItensDoPedido();
 			try {
 	            for (int i = 0; i < itens.length; i++) {
 				    itemDoPedidoRepository.saveItem(response.getId(), itens[i].getCod_produto(), itens[i].getQtdade());

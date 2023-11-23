@@ -1,6 +1,7 @@
 package com.example.trabalho.cliente;
 
-import jakarta.persistence.*;
+import javax.persistence.*;
+
 
 @Table(name = "cliente")
 @Entity(name = "cliente")
@@ -10,9 +11,9 @@ public class Cliente {
 	}
 	public Cliente(ClienteRequestDTO data) {
 		super();
-		this.nome = data.nome();
-		this.cpf = data.cpf();
-		this.sobrenome = data.sobrenome();
+		this.nome = data.getNome();
+		this.cpf = data.getCpf();
+		this.sobrenome = data.getSobrenome();
 	}
 	public Cliente(Long cod_cliente, String nome, String cpf, String sobrenome) {
 		super();
